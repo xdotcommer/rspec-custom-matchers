@@ -1,3 +1,5 @@
+$:.unshift File.dirname(__FILE__)
+
 class CustomMatcher
   def self.create(class_name, &block)
     klass = Class.new(CustomMatcher)
@@ -31,6 +33,7 @@ class CustomMatcher
   end
   
 private
+
   def message(positive = true)
     "#{positive ? 'Expected' : 'Did not expect'} #{@target.inspect} to #{class_display_name} #{@expected.inspect if self.method(:matcher).arity == 2}"
   end

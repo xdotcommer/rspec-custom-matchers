@@ -1,4 +1,4 @@
-require 'custom_matcher'
+require File.dirname(__FILE__) + '/spec_helper'
 
 describe CustomMatcher do
   describe "subclasses, in general (initialized without a block)" do

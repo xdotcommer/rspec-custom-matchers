@@ -1,10 +1,20 @@
 $:.unshift File.dirname(__FILE__)
 
 class CustomMatcher
+
   def self.create(class_name, &block)
     klass = Class.new(CustomMatcher)
     klass.send(:define_method, :matcher, &block) if block_given?
     Object.const_set(build_class_name(class_name), klass)
+  end
+
+  def self.define_matcher_method binding = binding
+    eval %{
+    def matcher(name, context = self.class, &block)
+      klass = CustomMatcher.create(name, &block)
+      context.send(:define_method, name) { |*args| klass.new(*args) }
+    end
+    }, binding
   end
   
   def initialize(expected = nil)
@@ -45,9 +55,4 @@ private
   def self.build_class_name(class_name)
     class_name.to_s.split('_').map {|s| s.capitalize}.join
   end
-end
-
-def matcher(name, &block)
-  klass = CustomMatcher.create(name, &block)
-  self.class.send(:define_method, name) { |*args| klass.new(*args) }
 end

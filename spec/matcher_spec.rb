@@ -1,4 +1,6 @@
-require 'custom_matcher'
+require File.dirname(__FILE__) + '/spec_helper'
+
+CustomMatcher.define_matcher_method(binding)
 
 matcher(:be_divisible_by) { |number, divisor| number % divisor == 0 }
 matcher(:be_even) {|even| even % 2 == 0}

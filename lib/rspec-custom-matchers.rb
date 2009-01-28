@@ -7,15 +7,6 @@ class CustomMatcher
     klass.send(:define_method, :matcher, &block) if block_given?
     Object.const_set(build_class_name(class_name), klass)
   end
-
-  def self.define_matcher_method binding = binding
-    eval %{
-    def matcher(name, context = self.class, &block)
-      klass = CustomMatcher.create(name, &block)
-      context.send(:define_method, name) { |*args| klass.new(*args) }
-    end
-    }, binding
-  end
   
   def initialize(expected = nil)
     @expected = expected
@@ -41,6 +32,10 @@ class CustomMatcher
       matcher(@target)
     end
   end
+
+  def description *args
+    class_display_name
+  end
   
 private
 
@@ -54,5 +49,20 @@ private
   
   def self.build_class_name(class_name)
     class_name.to_s.split('_').map {|s| s.capitalize}.join
+  end
+end
+
+# module to include wherever you want the #matcher method defined
+module CustomMatcher::Helper
+  def matcher(name, context = self, &block)
+    klass = CustomMatcher.create(name, &block)
+    begin
+      context.send(:define_method, name) { |*args| klass.new(*args) }
+    rescue NoMethodError
+      # the object we're trying to define this method on doesn't 
+      # have a define_method method.  let's be nice and go ahead 
+      # and try defining this method on the class of the object.
+      context.class.send(:define_method, name) { |*args| klass.new(*args) }
+    end
   end
 end

@@ -45,5 +45,10 @@ and then, in my `spec_helper.rb`
 
 That's how I do it!
 
+TODO
+----
+
+ - should support `matcher(:x){}` as well as merb's `Spec::Matcher.create`, which has more features and can be found at `merb-core/lib/merb-core/test/test_ext/rspec.rb`
+
 
 [xdotcommer]:  http://github.com/xdotcommer

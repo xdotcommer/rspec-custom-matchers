@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors = ["xdotcommer", "remi"]
   s.date = %q{2009-01-28}
   s.description = %q{Define RSpec custom matchers in 1 line}
-  s.email = %q{remi@remitaylor.com}
+  s.email = %q{remi@remitaylor.com mcowden@yahoo.com}
   s.files = ["VERSION.yml", "README.markdown", "lib/rspec-custom-matchers.rb", "spec/custom_matcher_spec.rb", "spec/matcher_spec.rb", "spec/spec_helper.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/remi/rspec-custom-matchers}

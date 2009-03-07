@@ -10,7 +10,7 @@ This class / project is created by [xdotcommer][] and updated by [remi][] to mak
 Install
 -------
 
-    sudo gem install remi-rspec-custom-matchers -s http://gems.github.com
+    sudo gem install rspec-custom-matchers -s http://gems.github.com
 
 Usage
 -----

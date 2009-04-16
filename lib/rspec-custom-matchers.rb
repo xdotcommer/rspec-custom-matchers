@@ -8,7 +8,7 @@ class CustomMatcher
     Object.const_set(build_class_name(class_name), klass)
   end
   
-  def initialize(expected = nil)
+  def initialize(*expected)
     @expected = expected
   end
   
@@ -26,10 +26,11 @@ class CustomMatcher
   
   def matches?(target)
     @target = target
-    if self.method(:matcher).arity == 2
-      matcher(@target, @expected)
-    else
-      matcher(@target)
+    case self.method(:matcher).arity
+    when -1, 2..10 then matcher(@target, *@expected)
+    when  1        then matcher(@target)
+    when  0        then matcher()
+    else fail
     end
   end
 
@@ -40,7 +41,8 @@ class CustomMatcher
 private
 
   def message(positive = true)
-    "#{positive ? 'Expected' : 'Did not expect'} #{@target.inspect} to #{class_display_name} #{@expected.inspect if self.method(:matcher).arity == 2}"
+    expected = @expected.size == 1 ? @expected.first : @expected
+    "#{positive ? 'Expected' : 'Did not expect'} #{@target.inspect} to #{class_display_name} #{expected.inspect if self.method(:matcher).arity == 2}"
   end
   
   def class_display_name
